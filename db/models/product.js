@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     category_id: DataTypes.INTEGER,
     main_img_url: DataTypes.STRING,
     summary: DataTypes.STRING,
+    img_id: DataTypes.INTEGER,
     status: DataTypes.INTEGER
   }, {
     timestamps: false,

@@ -1,6 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const category = sequelize.define('category', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     name: DataTypes.STRING,
     head_img_id: DataTypes.INTEGER,
     description: DataTypes.STRING,
