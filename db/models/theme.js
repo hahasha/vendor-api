@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     topic_img_id: DataTypes.INTEGER,
-    head_img_id: DataTypes.INTEGER
+    head_img_id: DataTypes.INTEGER,
+    status: DataTypes.INTEGER
   }, {
     timestamps: false,
     tableName: 'theme'
