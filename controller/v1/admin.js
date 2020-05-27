@@ -1,5 +1,4 @@
 'use strict'
-
 const models = require('../../db/models')
 const adminModel = models.admin
 const jwt = require('jsonwebtoken')

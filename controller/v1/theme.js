@@ -56,7 +56,7 @@ class Theme {
 
   async getOne(req, res, next) {
     try {
-      const { id } = req.params
+      const { id } = req.query
       let theme = await ThemeModel.findOne({
         include:[{
           as: 'head_img',
@@ -67,7 +67,7 @@ class Theme {
         },{
           model: ProductModel,
           attributes: {
-            exclude: ['status','themeProduct.theme_id']
+            exclude: ['status','']
           }
         }],
         where: {

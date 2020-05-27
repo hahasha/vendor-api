@@ -19,6 +19,7 @@ const categoryRouter = require('./routes/category')
 const imageRouter = require('./routes/image')
 const themeRouter = require('./routes/theme')
 const bannerRouter = require('./routes/banner')
+const userRouter = require('./routes/user')
 
 // for parsing application/json
 app.use(express.json())
@@ -38,6 +39,7 @@ app.use('/v1/category', categoryRouter)
 app.use('/v1/image', imageRouter)
 app.use('/v1/theme', themeRouter)
 app.use('/v1/banner', bannerRouter)
+app.use('/v1/user', userRouter)
 
 app.use((err, req, res, next) => {
   if(err) {

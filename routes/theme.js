@@ -10,10 +10,10 @@ router.get('/', Theme.getAll)
 
 /**
  * 请求指定id对应的专题
- * @url /theme/:id
- * @params id
+ * @url /theme/detail?id=1
+ * @query id
  */
-router.get('/:id', Theme.getOne)
+router.get('/detail', Theme.getOne)
 
 /**
  * 添加专题
