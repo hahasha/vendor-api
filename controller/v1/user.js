@@ -1,18 +1,15 @@
+const Jwt = require('../../public/js/token')
 const models = require('../../db/models')
 const UserModel = models.user
 const UserAddressModel = models.userAddress
-const jwt = require('jsonwebtoken')
-const sercet = "vendor"
+
 
 class User{
   async login (req, res, next) {
     try {
       const { username, password } = req.body
-      const token = jwt.sign({
-        username,
-        password,
-          'time': Date.now(),
-      }, sercet, { expiresIn: 60 * 60 })
+      const jwt = new Jwt({ username, password })
+      const token = jwt.generateToken() // 生成token
       const user = await UserModel.findOne({
         where: {
           username
@@ -37,7 +34,7 @@ class User{
           }
         })
       } else {
-        // 没登录过
+        // 没登录过，直接注册新用户
         const user = await UserModel.create({
           username,
           password
@@ -71,6 +68,13 @@ class User{
         }
       })
       if (addresses) {
+        addresses.forEach(item => { // 用于选择是否默认的swith判断
+          if (item.is_default === 1) {
+            item.is_default = true
+          } else {
+            item.is_default = false
+          }
+        })
         res.json({
           errcode: 0,
           msg: '查询成功',
@@ -93,6 +97,7 @@ class User{
       const address = await UserAddressModel.findOne({
         where: {
           user_id: id,
+          status: 0,
           is_default: 1
         }
       })
@@ -136,7 +141,7 @@ class User{
 
   async updateAddress (req, res, next) {
     try {
-      const { id, name, mobile, province, city, country, detail, label, user_id, isDefault } = req.body
+      const { id, name, mobile, province, city, country, detail, label, user_id, is_default } = req.body
       const address = await UserAddressModel.findOne({
         where: {
           id
@@ -148,7 +153,7 @@ class User{
           msg: '用户地址不存在'
         })
       } else {
-        if (isDefault) { // 将用户所有is_default置为0（即非默认）
+        if (is_default === 'true') { // 将用户所有is_default置为0（即非默认）
           await UserAddressModel.update({ is_default: 0 }, { where: { user_id }})
         }
         const updatedAddress = await address.update({
@@ -159,7 +164,7 @@ class User{
           country, 
           detail, 
           label,
-          is_default: isDefault ? 1 : 0
+          is_default: is_default === 'true' ? 1 : 0
         })
         if (updatedAddress) {
           res.json({
@@ -176,8 +181,8 @@ class User{
 
   async addAddress (req, res, next) {
     try {
-      const { name, mobile, province, city, country, detail, label, user_id, isDefault } = req.body
-      if (isDefault) {
+      const { name, mobile, province, city, country, detail, label, user_id, is_default } = req.body
+      if (is_default === 'true') {
         await UserAddressModel.update({ is_default: 0 }, { where: { user_id }})
       }
       const address = await UserAddressModel.create({
@@ -188,7 +193,7 @@ class User{
         country,
         detail,
         user_id,
-        is_default: isDefault ? 1 : 0,
+        is_default: is_default === 'true' ? 1 : 0,
         label
       })
       res.json({
