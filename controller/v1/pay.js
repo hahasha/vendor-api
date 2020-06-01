@@ -45,7 +45,9 @@ class Pay {
 
   async payBack (req, res, next) {
     try {
+      console.log(req.body)
       const ali = new Alipay(params)
+      const tradeStatus = req.body.trade_status // 交易状态
       const orderNo = req.body.out_trade_no // 商户订单号
       const gmtCreate = req.body.gmt_create // 交易创建时间
       const tradeNo = req.body.trade_no // 支付宝交易号
@@ -54,6 +56,7 @@ class Pay {
       const buyerPayAmount = req.body.buyer_pay_amount // 付款金额：用户在交易中支付的金额
       const result = ali.signVerify(req.body) // 验签：验证支付宝异步通知的合法性
       if (result) {
+          console.log(tradeStatus)
           // TRADE_FINISHED 交易完结，不支持退款  TRADE_SUCCESS 支付成功，可退款
           if (tradeStatus === 'TRADE_FINISHED' || tradeStatus === 'TRADE_SUCCESS') { 
               // 修改订单状态
