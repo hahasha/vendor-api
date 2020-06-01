@@ -67,10 +67,10 @@ class Order {
 
   async getDetail (req, res, next) {
     try {
-      const { id } = req.query
+      const { orderNo } = req.query
       const order = await OrderModel.findOne({
         where: {
-          id
+          order_no: orderNo
         }
       })
       if (!order) {

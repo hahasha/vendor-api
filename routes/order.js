@@ -10,9 +10,9 @@ const loginCheck = require('../middleware/loginCheck')
 router.post('/place', loginCheck, Order.placeOrder)
 
 /**
- * 获取订单详情
+ * 根据订单号获取订单详情
  * @url /v1/order/detail
- * @query id
+ * @query order_no
  */
 router.get('/detail', loginCheck, Order.getDetail)
 

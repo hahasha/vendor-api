@@ -21,19 +21,25 @@ const themeRouter = require('./routes/theme')
 const bannerRouter = require('./routes/banner')
 const userRouter = require('./routes/user')
 const orderRouter = require('./routes/order')
-const payRouter = require('./routes/testpay')
+const payRouter = require('./routes/pay')
 
+app.use(bodyParser.urlencoded({
+  type: function(req) {
+    return /x-www-form-urlencoded/.test(req.headers['content-type'])
+  },
+  extended: true
+}))
 // for parsing application/json
-app.use(express.json())
+// app.use(express.json())
 
 // for parsing application/xxwww-form-urlencoded
-app.use(express.urlencoded())
+// app.use(express.urlencoded())
 
 // for parsing application/xxwww-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.urlencoded({ extended: true }))
 
 // 托管静态资源
-app.use(express.static(path.join(__dirname, 'public'))) 
+app.use(express.static(path.join(__dirname, 'dist'))) 
 // app.use(express.static(path.join(__dirname, 'public'))) 
 
 app.use('/v1/admin', adminRouter)
