@@ -22,26 +22,35 @@ class Order {
         })
       } else {
         let outOfStock = false
-        if (snap_items.lenth > 0) {
-          snap_items.forEach(async item => {
-            const product = await ProductModel.findOne({
-              where: {
-                id: item.id
-              }
-            })
-            if (item.count > product.stock) { // 检查库存
-              outOfStock = true
-              return false
+        snap_items.forEach(async item => { // 遍历检查库存
+          const product = await ProductModel.findOne({
+            where: {
+              id: item.id
             }
           })
-        }
+          if (item.count > product.stock) { 
+            outOfStock = true
+            return false
+          }
+        })
         if (outOfStock) {
           res.json({
             errcode: 80000,
             msg: '下单失败，库存不足'
           })
         } else {
-        // order_no, user_id, total_price, total_count, snap_address, snap_items, create_time, status
+          // 减库存
+          snap_items.forEach(async item => {
+            const product = await ProductModel.findOne({
+              where: {
+                id: item.id
+              }
+            })
+            product.update({
+              stock: product.stock - item.count
+            })
+          })
+          // order_no, user_id, total_price, total_count, snap_address, snap_items, create_time, status
           const orderNo = getRandomNum() + user_id // 生成订单号(时间戳 + 6位随机数 + user_id)
           const order = await OrderModel.create({ // 保存订单信息
             order_no: orderNo,
