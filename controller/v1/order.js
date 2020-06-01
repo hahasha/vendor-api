@@ -56,7 +56,7 @@ class Order {
           res.json({
             errcode: 0,
             msg: '下单成功, 请尽快支付',
-            order_id: order.id
+            order
           })
         }
       }
