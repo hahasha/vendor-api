@@ -9,7 +9,7 @@ function getRandomNum () {
 class Order {
   async placeOrder (req, res, next) {
     try {
-      const { user_id, total_price, total_count, snap_address, snap_items } = req.body
+      const { user_id, total_price, total_count, snap_address, snap_items, snap_img, snap_name } = req.body
       const user = await UserModel.findOne({
         where: {
           id: user_id
@@ -60,6 +60,8 @@ class Order {
             snap_address,
             snap_items,
             create_time: (new Date()).getTime(),
+            snap_img,
+            snap_name,
             status: 1
           })
           res.json({
