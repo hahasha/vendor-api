@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
+const compression = require('compression')
+
+app.use(compression())
 
 //设置跨域访问  
 app.all('*', function(req, res, next) {
