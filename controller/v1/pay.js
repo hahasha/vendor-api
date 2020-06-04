@@ -8,7 +8,7 @@ const outTradeId = Date.now().toString()
 
 const params = {
   appId: '2016102300742946',
-  notifyUrl: 'http://www.liusha.ltd/vendor/v1/pay/back',
+  notifyUrl: 'http://www.liusha.ltd/api/v1/pay/back',
   // returnUrl: 'http://www.liusha.ltd/vendor/#/orderDetail',
   rsaPrivate: path.resolve('./alipay_configs/private-key.pem'),
   rsaPublic: path.resolve('./alipay_configs/public-key.pem'),
@@ -22,7 +22,7 @@ class Pay {
       const { returnPath, body, subject, outTradeId, amount } = req.body
       const ali = new Alipay({
         ...params,
-        returnUrl: 'http://www.liusha.ltd/vendor/#' + returnPath
+        returnUrl: 'http://www.liusha.ltd/vendor/' + returnPath
       })
       const url =  ali.webPay({
           body, // 订单描述
