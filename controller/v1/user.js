@@ -1,15 +1,26 @@
-const Jwt = require('../../public/js/token')
+const moment = require('moment')
+const jwt = require('jsonwebtoken')
+const secret = 'vendor'
 const models = require('../../db/models')
 const UserModel = models.user
 const UserAddressModel = models.userAddress
 
+function generateToken (payload) {
+  const token = jwt.sign({
+    payload // payload
+    },  
+    secret, // 设置用于加密的key 
+    { 
+      expiresIn: '1h' // 过期时间
+    })
+  return token
+}
 
 class User{
   async login (req, res, next) {
     try {
       const { username, password } = req.body
-      const jwt = new Jwt({ username, password })
-      const token = jwt.generateToken() // 生成token
+      const token = generateToken({ username, password })
       const user = await UserModel.findOne({
         where: {
           username
@@ -37,7 +48,8 @@ class User{
         // 没登录过，直接注册新用户
         const user = await UserModel.create({
           username,
-          password
+          password,
+          create_time: new Date()
         })
         res.json({
           errcode: 0,
@@ -267,6 +279,49 @@ class User{
       next(error)
     }
   }
+
+  async countUser(req, res, next) {
+    try {
+      const { date } = req.query
+      const users = await UserModel.findAll()
+      if (!date) {
+        res.json({
+          errcode: 0,
+          msg: '查询成功',
+          count: users.length
+        })
+      } else {
+        const count = users.filter(item => moment(item.create_time).format('YYYY-MM-DD') === date).length
+        res.json({
+          errcode: 0,
+          msg: '查询成功',
+          count
+        })
+      }
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getRecent(req, res, next) {
+    try {
+      const { dateArr } = req.query
+      const users = await UserModel.findAll()
+      let countArr = [] 
+      dateArr.forEach(date => {
+        const count = users.filter(item => moment(item.create_time).format('YYYY-MM-DD') === date).length
+        countArr.push(count)
+      })
+      res.json({
+        errcode: 0,
+        msg: '查询成功',
+        countArr
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
 }
 
 module.exports = new User()

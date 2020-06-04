@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const order = sequelize.define('order', {
     order_no: DataTypes.STRING,
@@ -10,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     snap_name: DataTypes.STRING,
     snap_address: DataTypes.JSON,
     snap_items: DataTypes.JSON,
-    create_time: DataTypes.INTEGER,
     gmt_create: DataTypes.STRING,
+    create_time: DataTypes.INTEGER,
     trade_no: DataTypes.STRING,
     gmt_payment: DataTypes.STRING
   }, {

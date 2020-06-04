@@ -1,7 +1,9 @@
+const moment = require('moment')
 const models = require('../../db/models')
 const OrderModel = models.order
 const UserModel = models.user
 const ProductModel = models.product
+
 function getRandomNum () {
   return (new Date()).getTime() + Math.floor(Math.random() * 9 + 1) * Math.pow(10, 6)
 }
@@ -59,7 +61,7 @@ class Order {
             total_count,
             snap_address,
             snap_items,
-            create_time: (new Date()).getTime(),
+            create_time: new Date(),
             snap_img,
             snap_name,
             status: 1
@@ -130,6 +132,48 @@ class Order {
       next(error)
     }
   }
+  
+  async countOrder(req, res, next) {
+    try {
+      const { date } = req.query
+      const orders = await OrderModel.findAll()
+      if (!date) {
+        res.json({
+          errcode: 0,
+          msg: '查询成功',
+          count: orders.length
+        })
+      } else {
+        // 查询指定日期的订单数
+        const count = orders.filter(item => moment(item.create_time).format('YYYY-MM-DD') === date).length
+        res.json({
+          errcode: 0,
+          msg: '查询成功',
+          count
+        })
+      }
+    } catch (error) {
+      next(error)
+    }
+  }
+  
+  async getRecent(req, res, next) {
+    try {
+      const { dateArr } = req.query
+      const orders = await OrderModel.findAll()
+      let countArr = [] 
+      dateArr.forEach(date => {
+        const count = orders.filter(item => moment(item.create_time).format('YYYY-MM-DD') === date).length
+        countArr.push(count)
+      })
+      res.json({
+        errcode: 0,
+        msg: '查询成功',
+        countArr
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 }
-
 module.exports = new Order()

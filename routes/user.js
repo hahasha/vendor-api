@@ -49,4 +49,17 @@ router.post('/resetPassword', loginCheck, User.resetPassword)
  */
 router.post('/update', loginCheck, User.updateUserInfo)
 
+/**
+ * 统计用户总数
+ * @url /v1/user/count
+ */
+router.get('/count', User.countUser)
+
+/**
+ * 获取最近的订单数据
+ * @url /v1/user/recent?dateArr=['2020-06-01', '2020-06-02']
+ * @query dateArr 
+ */
+router.get('/recent', User.getRecent)
+
 module.exports = router

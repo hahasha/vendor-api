@@ -42,8 +42,7 @@ app.use(bodyParser.urlencoded({
 // app.use(bodyParser.urlencoded({ extended: true }))
 
 // 托管静态资源
-app.use(express.static(path.join(__dirname, 'dist'))) 
-// app.use(express.static(path.join(__dirname, 'public'))) 
+app.use(express.static(path.join(__dirname, 'public'))) 
 
 app.use('/v1/admin', adminRouter)
 app.use('/v1/product', productRouter)
@@ -63,10 +62,10 @@ app.use((err, req, res, next) => {
   }
 })
 
-app.use('/', function (req, res, next) {
-  req.url = 'index.html';
-  next();
-});
+// app.use('/', function (req, res, next) {
+//   req.url = 'index.html';
+//   next();
+// });
 
 app.listen(3000, () => {
   console.log('服务启动成功')
