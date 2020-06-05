@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser')
 const compression = require('compression')
+const history = require('connect-history-api-fallback')
 
 app.use(compression())
 
