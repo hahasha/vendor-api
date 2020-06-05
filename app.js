@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser')
 const compression = require('compression')
-const history = require('connect-history-api-fallback')
+// const history = require('connect-history-api-fallback')
 
 app.use(compression())
 
@@ -42,7 +42,7 @@ app.use(bodyParser.urlencoded({
 // for parsing application/xxwww-form-urlencoded
 // app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(history())
+// app.use(history())
 // 托管静态资源
 app.use(express.static(path.join(__dirname, 'public'))) 
 

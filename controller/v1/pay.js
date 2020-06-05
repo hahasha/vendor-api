@@ -22,7 +22,7 @@ class Pay {
       const { returnPath, body, subject, outTradeId, amount } = req.body
       const ali = new Alipay({
         ...params,
-        returnUrl: 'http://www.liusha.ltd/vendor/' + returnPath
+        returnUrl: 'http://www.liusha.ltd/vendor/#' + returnPath
       })
       const url =  ali.webPay({
           body, // 订单描述

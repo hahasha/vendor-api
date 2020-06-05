@@ -61,7 +61,7 @@ class Order {
             total_count,
             snap_address,
             snap_items,
-            create_time: new Date(),
+            create_time: moment(new Date()).format('YYYY-MM-DD'),
             snap_img,
             snap_name,
             status: 1
