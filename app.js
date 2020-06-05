@@ -42,6 +42,7 @@ app.use(bodyParser.urlencoded({
 // for parsing application/xxwww-form-urlencoded
 // app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use(history())
 // 托管静态资源
 app.use(express.static(path.join(__dirname, 'public'))) 
 
@@ -67,7 +68,7 @@ app.use((err, req, res, next) => {
 //   req.url = 'index.html';
 //   next();
 // });
-app.use(history())
+
 app.listen(3000, () => {
   console.log('服务启动成功')
 })
