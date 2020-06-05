@@ -66,7 +66,7 @@ app.use((err, req, res, next) => {
 //   req.url = 'index.html';
 //   next();
 // });
-
+app.use(history())
 app.listen(3000, () => {
   console.log('服务启动成功')
 })
